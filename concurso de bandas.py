@@ -24,7 +24,7 @@ class BandasEscolar(participante):
     def registrar_puntajes(self):
         print("Califique a la banda, segun los criterios del 1 al 10")
 
-        ritmo=int(input("Ritmo presentado: "))
+        ritmo=int(input("Ritmo: "))
         uniformidad=int(input("Uniformidad: "))
         coreo=int(input("Coreografía: "))
         alineacion=int(input("Alineación: "))
