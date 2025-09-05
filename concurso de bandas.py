@@ -28,4 +28,11 @@ class Bandasescolares(participante):
             return f"Nombre: {self.nombre}-Insitucion: {self.institucion} - Categoría: {self._categoria}"
 
 
+class concurso:
+    def __init__(self,nombre,fecha):
+        self.nombre = nombre
+        self.fecha = fecha
+        self.bandas = {}
+
+    def InscribirBandas(self):
 
