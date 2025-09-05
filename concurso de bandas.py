@@ -28,3 +28,4 @@ class Bandasescolares(participante):
             return f"Nombre: {self.nombre}-Insitucion: {self.institucion} - Categoría: {self._categoria}"
 
 
+
