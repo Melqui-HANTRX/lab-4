@@ -6,7 +6,7 @@ class participante:
     def mostrar_info(self):
         return f"Nombre: {self.nombre}-Insitucion: {self.institucion}"
 
-class Bandasescolares(participante):
+class BandasEscolar(participante):
     def __init__(self,nombre,institucion,categoria,puntaje):
         super().__init__(nombre,institucion)
         self._categoria = categoria
@@ -21,9 +21,30 @@ class Bandasescolares(participante):
     def categoria(self,categoria):
         self._categoria = categoria
 
+    def registrar_puntajes(self):
+        print("Califique a la banda, segun los criterios del 1 al 10")
+
+        ritmo=int(input("Ritmo presentado: "))
+        uniformidad=int(input("Uniformidad: "))
+        coreo=int(input("Coreografía: "))
+        alineacion=int(input("Alineación: "))
+        puntualidad=int(input("Puntualidad: "))
+
+        self._puntaje[self.nombre]={
+            "ritmo": ritmo,
+            "uniformidad": uniformidad,
+            "coreo": coreo,
+            "alineacion": alineacion,
+            "puntualidad": puntualidad,
+        }
+
+        suma_puntajes=ritmo+uniformidad+coreo+alineacion+puntualidad
+        self._puntaje=suma_puntajes
+
+
     def mostrar_info(self):
         if self._puntaje:
-            return f"Nombre: {self.nombre}-Insitucion: {self.institucion} - Categoría: {self._categoria}-Puntaje total: {self._puntaje}"
+            return f"Nombre: {self.nombre}-Insitucion: {self.institucion} - Categoría: {self._categoria} - Puntaje total: {self._puntaje} - Puntaje promedio: {self._puntaje/5}"
         else:
             return f"Nombre: {self.nombre}-Insitucion: {self.institucion} - Categoría: {self._categoria}"
 
@@ -34,5 +55,6 @@ class concurso:
         self.fecha = fecha
         self.bandas = {}
 
-    def InscribirBandas(self):
+    def iscribir_bandas(self):
+        pass
 
