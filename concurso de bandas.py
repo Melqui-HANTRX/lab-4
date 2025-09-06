@@ -7,23 +7,26 @@ class participante:
         return f"Nombre: {self.nombre}-Insitucion: {self.institucion}"
 
 class BandasEscolar(participante):
+    Categorias_Validas = ["Primaria","Basico","Diversificado"]
+    Criterios = ["Ritmo","Uniformidad","Coreografia","Alineacion","Puntualidad"]
+
     def __init__(self,nombre,institucion,categoria,puntaje):
         super().__init__(nombre,institucion)
         self._categoria = categoria
         self._puntaje = puntaje
         self.registrar_puntaje = {}
-
     @property
     def categoria(self):
         return self._categoria
 
     @categoria.setter
-    def categoria(self,categoria):
+    def set_categoria(self, categoria):
+        if categoria not in self.Categorias_Validas:
+            raise ValueError("Categoría inválida, debe ser: Primaria, Básico o Diversificado")
         self._categoria = categoria
 
     def registrar_puntajes(self):
         print("Califique a la banda, segun los criterios del 1 al 10")
-
         ritmo=int(input("Ritmo: "))
         uniformidad=int(input("Uniformidad: "))
         coreo=int(input("Coreografía: "))
@@ -49,7 +52,9 @@ class BandasEscolar(participante):
             return f"Nombre: {self.nombre}-Insitucion: {self.institucion} - Categoría: {self._categoria}"
 
 class concurso:
-    def __init__(self):
+    def __init__(self,nombre,fehca):
+        self.nombre = nombre
+        self.fecha = fehca
         self.bandas = {}
 
     def InscribirBandas(self,banda):
@@ -60,20 +65,13 @@ class concurso:
     def registrar_Evaluacion(self,nombre_banda,puntajes):
         if nombre_banda not in self.bandas:
             raise ValueError(f"La banda {nombre_banda} no esta inscrita.")
-        self.bandas[nombre_banda] = puntajes
-
-    def registrar_evaluacion(self, nombre_banda, puntajes):
-        if nombre_banda not in self.bandas:
-            raise ValueError(f"La banda {nombre_banda} no está inscrita.")
-        banda = self.bandas[nombre_banda]
-        for i in puntajes:
-            banda.agregar_puntaje(i)
+        self.bandas[nombre_banda].registrar_puntajes(puntajes)
 
     def listar_bandas(self):
-        print("-- Listado de bandas --")
+        dato = "-- Listado de Bandas --\n"
         for banda in self.bandas.values():
-            print(banda.mostrar_info())
-
+            dato += banda.mostrar_info() + "\n"
+        return dato
 
 
 
