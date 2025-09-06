@@ -19,13 +19,20 @@ class BandasEscolar(participante):
     def categoria(self):
         return self._categoria
 
+
     @categoria.setter
     def set_categoria(self, categoria):
         if categoria not in self.Categorias_Validas:
-            raise ValueError("Categoría inválida, debe ser: Primaria, Básico o Diversificado")
+            raise ValueError("Categoría inválida, debe ser: Primaria, Básico o Diversificado").lower()
         self._categoria = categoria
 
-    def registrar_puntajes(self):
+    def registrar_puntajes(self,puntajes):
+        for criterio in self.Criterios:
+            if criterio not in puntajes:
+                raise ValueError(f"Falta criterio: {criterio}")
+            if not (0 <= puntajes[criterio] <= 10):
+                raise ValueError(f"Puntaje inválido para {criterio}, debe ser de 0 a 10")
+        self._puntajes = puntajes
         print("Califique a la banda, segun los criterios del 1 al 10")
         ritmo=int(input("Ritmo: "))
         uniformidad=int(input("Uniformidad: "))
@@ -71,7 +78,10 @@ class concurso:
         dato = "-- Listado de Bandas --\n"
         for banda in self.bandas.values():
             dato += banda.mostrar_info() + "\n"
-        return dato
+        return
+
+    def ranking(self):
+        bandas_lista = lis
 
 
 
