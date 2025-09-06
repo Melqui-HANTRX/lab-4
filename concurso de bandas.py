@@ -19,7 +19,6 @@ class BandasEscolar(participante):
     def categoria(self):
         return self._categoria
 
-
     @categoria.setter
     def set_categoria(self, categoria):
         if categoria not in self.Categorias_Validas:
