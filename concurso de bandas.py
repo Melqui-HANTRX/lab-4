@@ -41,7 +41,7 @@ class BandasEscolar(participante):
                 raise ValueError(f"Falta criterio: {criterio}")
             if not (0 <= puntajes[criterio] <= 10):
                 raise ValueError(f"Puntaje inválido para {criterio}, debe ser de 0 a 10")
-        self._puntaje = sum(self._puntajes.values())
+        self._puntaje = sum(puntajes.values())
 
 
     def mostrar_info(self):
@@ -50,7 +50,7 @@ class BandasEscolar(participante):
         else:
             return f"Nombre: {self.nombre}-Insitucion: {self.institucion} - Categoría: {self._categoria}"
 
-class concurso:
+class Concurso:
     def __init__(self,nombre,fehca):
         self.nombre = nombre
         self.fecha = fehca
@@ -59,12 +59,14 @@ class concurso:
     def InscribirBandas(self,banda):
         if banda.nombre in self.bandas:
             raise ValueError(f"La banda {banda.nombre} ya existe.")
-        self.bandas[banda.nombre] = banda
+        else:
+            self.bandas[banda.nombre] = banda
 
     def registrar_Evaluacion(self,nombre_banda,puntajes):
         if nombre_banda not in self.bandas:
             raise ValueError(f"La banda {nombre_banda} no esta inscrita.")
-        self.bandas[nombre_banda].registrar_puntajes(puntajes)
+        else:
+            self.bandas[nombre_banda].registrar_puntajes(puntajes)
 
     def listar_bandas(self):
         dato = "-- Listado de Bandas --\n"
@@ -93,7 +95,7 @@ class ConcursoBandasApp:
             self.ventana.title("Concurso de Bandas - Quetzaltenango")
             self.ventana.geometry("500x300")
 
-            self.concurso_obj = concurso("Concurso de Bandas - 14 de Septiembre", "2025-09-14")
+            self.concurso_obj = Concurso("Concurso de Bandas - 14 de Septiembre", "2025-09-14")
 
             self.menu()
 
@@ -121,12 +123,57 @@ class ConcursoBandasApp:
 
         def inscribir_banda(self):
             print("Se abrió la ventana: Inscribir Banda")
-            tk.Toplevel(self.ventana).title("Inscribir Banda")
+            ventana_inscribir= tk.Toplevel(self.ventana)
+            tk.Toplevel(ventana_inscribir).title("Inscribir Banda")
+
+            tk.Label(ventana_inscribir, text="Ingrese el nombre de la banda: ").pack(pady=5)
+            entrada1 = tk.Entry(ventana_inscribir)
+            entrada1.pack(pady=5)
+
+            tk.Label(ventana_inscribir, text="Ingrese la institución de la banda: ").pack(pady=5)
+            entrada2 = tk.Entry(ventana_inscribir)
+            entrada2.pack(pady=5)
+
+            tk.Label(ventana_inscribir, text="Ingrese la categoría (Primaria, Basico, Diversificado):").pack(pady=5)
+            entrada3 = tk.Entry(ventana_inscribir)
+            entrada3.pack(pady=5)
+
+            def guardar_datos():
+                nombre=entrada1.get().lower()
+                institucion=entrada2.get()
+                categoria=entrada3.get()
+
+                try:
+                    banda=BandasEscolar(nombre,institucion,categoria, None)
+                    self.concurso_obj.InscribirBandas(banda)
+                    print(f"Banda {nombre} inscrita exitosamente.")
+
+                except Exception as e:
+                    print(e)
+
+            tk.Button(ventana_inscribir, text="Guardar", command=guardar_datos).pack(pady=5)
 
 
         def registrar_evaluacion(self):
             print("Se abrió la ventana: Registrar Evaluación")
-            tk.Toplevel(self.ventana).title("Registrar Evaluación")
+            ventana_registrar = tk.Toplevel(self.ventana)
+            tk.Toplevel(ventana_registrar).title("Registrar Evaluacion")
+
+            tk.Label(ventana_registrar, text="Ingrese el nombre de la banda a calificar: ").pack(pady=5)
+            entrada1 = tk.Entry(ventana_registrar)
+            entrada1.pack(pady=5)
+
+            def buscar_banda():
+                nombre_buscar = (entrada1.get()).lower()
+
+                if nombre_buscar in self.concurso_obj.bandas:
+                    etiqueta1 = (tk.Label(ventana_registrar, text=f"La banda {nombre_buscar} ya existe."))
+                    etiqueta1.pack(pady=5)
+                else:
+                    etiqueta1=(tk.Label(ventana_registrar, text="Banda no encontrada"))
+                    etiqueta1.pack(pady=5)
+
+            tk.Button(ventana_registrar, text="Buscar", command=buscar_banda).pack(pady=5)
 
 
         def listar_bandas(self):
